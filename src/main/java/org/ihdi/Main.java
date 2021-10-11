@@ -28,13 +28,14 @@ public class Main {
         csvWriter.append("Description");
         csvWriter.append("\n");
 
-        System.setProperty("webdriver.chrome.driver", "/home/recharge/IdeaProjects/TokpedScrap/chromedriver_linux64/chromedriver");
+        System.setProperty("webdriver.chrome.driver", args[0]);
 
         Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "Galaxy S5");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("incognito");
+        options.addArguments("headless");
         options.setExperimentalOption("useAutomationExtension", false);
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
         options.setExperimentalOption("mobileEmulation", mobileEmulation);
