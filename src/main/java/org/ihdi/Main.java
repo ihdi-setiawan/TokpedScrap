@@ -82,6 +82,28 @@ public class Main {
             Thread.sleep(1000);
         }
 
+        int n = 1;
+        for (Map.Entry<String, List<String>> set : linkMaps.entrySet()) {
+            System.out.println(n);
+            driver.navigate().to(set.getKey());
+            Thread.sleep(1500);
+
+            String productName = driver.findElement(By.xpath("//h1[@data-testid='pdpProductName']")).getText();
+            String productPrice = driver.findElement(By.xpath("//div/p[@data-testid='pdpProductPrice']")).getText();
+            String productRating = set.getValue().get(0);
+            String productImage = set.getValue().get(1);
+            String storeName = set.getValue().get(2);
+
+            js.executeScript("window.scrollBy(0, 1000);");
+            Thread.sleep(1000);
+            WebElement descriptionElmnt = driver.findElement(By.xpath("//div[@data-testid='pdpProductDetailContainer']/span"));
+            js.executeScript("arguments[0].click();", descriptionElmnt);
+            Thread.sleep(200);
+            js.executeScript("window.scrollBy(0, 50);");
+            Thread.sleep(1000);
+            List<WebElement> productDescElmnt = driver.findElements(By.xpath("//div[@data-testid='pdpDescriptionDetailed']"));
+            n++;
+        }
         driver.close();
     }
 }
