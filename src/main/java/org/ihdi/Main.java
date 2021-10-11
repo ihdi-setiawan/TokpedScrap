@@ -9,10 +9,24 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws  InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         final String url = "https://www.tokopedia.com/p/handphone-tablet/handphone/";
         final int totalAllAds = 100;
         int numOfAds = 0;
+
+        FileWriter csvWriter = new FileWriter("src/main/resources/out.csv");
+        csvWriter.append("Name");
+        csvWriter.append(",");
+        csvWriter.append("Price");
+        csvWriter.append(",");
+        csvWriter.append("Rating");
+        csvWriter.append(",");
+        csvWriter.append("Image");
+        csvWriter.append(",");
+        csvWriter.append("Store");
+        csvWriter.append(",");
+        csvWriter.append("Description");
+        csvWriter.append("\n");
 
         System.setProperty("webdriver.chrome.driver", "/home/recharge/IdeaProjects/TokpedScrap/chromedriver_linux64/chromedriver");
 
@@ -102,8 +116,31 @@ public class Main {
             js.executeScript("window.scrollBy(0, 50);");
             Thread.sleep(1000);
             List<WebElement> productDescElmnt = driver.findElements(By.xpath("//div[@data-testid='pdpDescriptionDetailed']"));
+
+            csvWriter.append(escapeSpecialCharacters(productName));
+            csvWriter.append(",");
+            csvWriter.append(escapeSpecialCharacters(productPrice));
+            csvWriter.append(",");
+            csvWriter.append(escapeSpecialCharacters(productRating));
+            csvWriter.append(",");
+            csvWriter.append(escapeSpecialCharacters(productImage));
+            csvWriter.append(",");
+            csvWriter.append(escapeSpecialCharacters(storeName));
+            csvWriter.append(",");
+            csvWriter.append(escapeSpecialCharacters(productDescElmnt.get(0).getText()));
+            csvWriter.append("\n");
+
             n++;
         }
         driver.close();
+    }
+
+    public static String escapeSpecialCharacters(String data) {
+        String escapedData = data.replaceAll("\\R", " ");
+        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
+            data = data.replace("\"", "\"\"");
+            escapedData = "\"" + data + "\"";
+        }
+        return escapedData;
     }
 }
