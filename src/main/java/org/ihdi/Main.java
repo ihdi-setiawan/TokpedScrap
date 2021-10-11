@@ -31,7 +31,18 @@ public class Main {
         driver.manage().window().setSize(new Dimension(400, 600));
 
         driver.get(url);
+        Thread.sleep(1000);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0, 500);");
+        Thread.sleep(1000);
 
+        //check overlay
+        List<WebElement> overlayElmnt = driver.findElements(By.className("unf-overlay"));
+        if (!overlayElmnt.isEmpty()) {
+            driver.findElement(By.xpath("//article/div/div/div/h1/following-sibling::*[2]/button")).click();
+        }
+        Thread.sleep(1000);
+        
         driver.close();
     }
 }
